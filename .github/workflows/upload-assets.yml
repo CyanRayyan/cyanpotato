@@ -11,27 +11,47 @@ jobs:
     - name: Set up Git user
       run: |
         echo "Setting up Git user"
-        git config --global user.name "CyanRayyan" || { echo "Failed to set Git user name"; exit 1; }
-        git config --global user.email "1dangmax@hdsb.ca" || { echo "Failed to set Git user email"; exit 1; }
+        git config --global user.name "CyanRayyan"
+        if [ $? -ne 0 ]; then
+          echo "Failed to set Git user name"
+          exit 1
+        fi
+        git config --global user.email "1dangmax@hdsb.ca"
+        if [ $? -ne 0 ]; then
+          echo "Failed to set Git user email"
+          exit 1
+        fi
         echo "Git user set up completed"
 
     - name: Create assets directory
       run: |
         echo "Creating assets directory"
-        mkdir -p assets || { echo "Failed to create assets directory"; exit 1; }
+        mkdir -p assets
+        if [ $? -ne 0 ]; then
+          echo "Failed to create assets directory"
+          exit 1
+        fi
         ls -l
         echo "Assets directory created"
 
     - name: Download assets
       run: |
         echo "Downloading assets"
-        wget -O assets/assets.zip "https://www.dropbox.com/scl/fi/fbuiy99tb218akvy6u9bg/Potato-By-Tyler-Dang.zip?rlkey=1wtfely7oyutriq9qqmihx64b&st=cm1smtvn&dl=1" || { echo "Failed to download assets"; exit 1; }
+        wget -O assets/assets.zip "https://www.dropbox.com/scl/fi/fbuiy99tb218akvy6u9bg/Potato-By-Tyler-Dang.zip?rlkey=1wtfely7oyutriq9qqmihx64b&st=cm1smtvn&dl=1"
+        if [ $? -ne 0 ]; then
+          echo "Failed to download assets"
+          exit 1
+        fi
         echo "Assets downloaded"
 
     - name: Extract assets
       run: |
         echo "Extracting assets"
-        unzip assets/assets.zip -d assets || { echo "Failed to unzip assets"; exit 1; }
+        unzip assets/assets.zip -d assets
+        if [ $? -ne 0 ]; then
+          echo "Failed to unzip assets"
+          exit 1
+        fi
         ls -l assets
         echo "Assets extracted"
 
@@ -45,8 +65,20 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.POTATO_KEY }}
       run: |
         echo "Starting Git operations"
-        git add . || { echo "Failed to add files to Git"; exit 1; }
+        git add .
+        if [ $? -ne 0 ]; then
+          echo "Failed to add files to Git"
+          exit 1
+        fi
         git status
-        git commit -m "Add assets" || { echo "No changes to commit"; exit 0; }
-        git push || { echo "Push failed"; exit 1; }
+        git commit -m "Add assets"
+        if [ $? -ne 0 ]; then
+          echo "No changes to commit"
+          exit 0
+        fi
+        git push
+        if [ $? -ne 0 ]; then
+          echo "Push failed"
+          exit 1
+        fi
         echo "Git operations completed"
