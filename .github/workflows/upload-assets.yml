@@ -9,17 +9,29 @@ jobs:
 
     - name: Set up Git user
       run: |
+        echo "Setting up Git user"
         git config --global user.name "CyanRayyan"
         git config --global user.email "1dangmax@hdsb.ca"
+        git config --global user.name
+        git config --global user.email
+        echo "Git user set up completed"
 
     - name: Create assets directory
-      run: mkdir -p assets
+      run: |
+        echo "Creating assets directory"
+        mkdir -p assets
+        ls -l
+        echo "Assets directory created"
 
     - name: Download and extract assets
       run: |
+        echo "Downloading and extracting assets"
         cd assets
         wget -qO- "https://dl.dropboxusercontent.com/scl/fi/fbuiy99tb218akvy6u9bg/Potato-By-Tyler-Dang.zip?dl=1" | tar -xz
-
+        echo "Assets downloaded and extracted"
+        ls -l
+        cd ..
+        
     - name: Debug directory structure
       run: |
         echo "Current directory structure:"
@@ -32,6 +44,6 @@ jobs:
         echo "Starting Git operations"
         git add .
         git status  # Debugging to see what files are staged
-        git commit -m "Add assets" || echo "No changes to commit"  # Handle no changes scenario
-        git push || echo "Push failed"
+        git commit -m "Add assets" || { echo "No changes to commit"; exit 0; }  # Handle no changes scenario without failing
+        git push || { echo "Push failed"; exit 1; }
         echo "Git operations completed"
