@@ -1,19 +1,18 @@
 name: Upload Assets
 on: [push]
+
 jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      
+
     - name: Set up Git user
       run: |
         echo "Setting up Git user"
         git config --global user.name "CyanRayyan" || { echo "Failed to set Git user name"; exit 1; }
         git config --global user.email "1dangmax@hdsb.ca" || { echo "Failed to set Git user email"; exit 1; }
-        git config --global user.name
-        git config --global user.email
         echo "Git user set up completed"
 
     - name: Create assets directory
@@ -33,8 +32,8 @@ jobs:
       run: |
         echo "Extracting assets"
         unzip assets/assets.zip -d assets || { echo "Failed to unzip assets"; exit 1; }
-        echo "Assets extracted"
         ls -l assets
+        echo "Assets extracted"
 
     - name: Debug directory structure
       run: |
@@ -47,7 +46,7 @@ jobs:
       run: |
         echo "Starting Git operations"
         git add . || { echo "Failed to add files to Git"; exit 1; }
-        git status  # Debugging to see what files are staged
-        git commit -m "Add assets" || { echo "No changes to commit"; exit 0; }  # Handle no changes scenario without failing
+        git status
+        git commit -m "Add assets" || { echo "No changes to commit"; exit 0; }
         git push || { echo "Push failed"; exit 1; }
         echo "Git operations completed"
