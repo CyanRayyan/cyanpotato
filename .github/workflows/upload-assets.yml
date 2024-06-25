@@ -7,6 +7,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       continue-on-error: true  # Allow workflow to continue even if this step fails
+      run: echo "Checked out repository"
 
     - name: Set up Git user
       run: |
@@ -28,7 +29,8 @@ jobs:
       run: |
         echo "Downloading and extracting assets"
         cd assets || { echo "Failed to change to assets directory"; exit 1; }
-        wget -qO- "https://www.dropbox.com/scl/fi/fbuiy99tb218akvy6u9bg/Potato-By-Tyler-Dang.zip?rlkey=1wtfely7oyutriq9qqmihx64b&st=cm1smtvn&dl=1" | tar -xz || { echo "Failed to download or extract assets"; exit 1; }
+        wget -O assets.zip "https://www.dropbox.com/scl/fi/fbuiy99tb218akvy6u9bg/Potato-By-Tyler-Dang.zip?rlkey=1wtfely7oyutriq9qqmihx64b&st=cm1smtvn&dl=1" || { echo "Failed to download assets"; exit 1; }
+        unzip assets.zip || { echo "Failed to unzip assets"; exit 1; }
         echo "Assets downloaded and extracted"
         ls -l
         cd ..
