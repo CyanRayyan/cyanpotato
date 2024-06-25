@@ -6,9 +6,7 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      continue-on-error: true  # Allow workflow to continue even if this step fails
-      run: echo "Checked out repository"
-
+      
     - name: Set up Git user
       run: |
         echo "Setting up Git user"
@@ -25,15 +23,18 @@ jobs:
         ls -l
         echo "Assets directory created"
 
-    - name: Download and extract assets
+    - name: Download assets
       run: |
-        echo "Downloading and extracting assets"
-        cd assets || { echo "Failed to change to assets directory"; exit 1; }
-        wget -O assets.zip "https://www.dropbox.com/scl/fi/fbuiy99tb218akvy6u9bg/Potato-By-Tyler-Dang.zip?rlkey=1wtfely7oyutriq9qqmihx64b&st=cm1smtvn&dl=1" || { echo "Failed to download assets"; exit 1; }
-        unzip assets.zip || { echo "Failed to unzip assets"; exit 1; }
-        echo "Assets downloaded and extracted"
-        ls -l
-        cd ..
+        echo "Downloading assets"
+        wget -O assets/assets.zip "https://www.dropbox.com/scl/fi/fbuiy99tb218akvy6u9bg/Potato-By-Tyler-Dang.zip?rlkey=1wtfely7oyutriq9qqmihx64b&st=cm1smtvn&dl=1" || { echo "Failed to download assets"; exit 1; }
+        echo "Assets downloaded"
+
+    - name: Extract assets
+      run: |
+        echo "Extracting assets"
+        unzip assets/assets.zip -d assets || { echo "Failed to unzip assets"; exit 1; }
+        echo "Assets extracted"
+        ls -l assets
 
     - name: Debug directory structure
       run: |
