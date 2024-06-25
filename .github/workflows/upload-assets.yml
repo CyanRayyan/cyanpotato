@@ -60,6 +60,15 @@ jobs:
         echo "Current directory structure:"
         ls -R
 
+    - name: Check Git status
+      run: |
+        echo "Checking Git status"
+        git status
+        if [ $? -ne 0 ]; then
+          echo "Failed to check Git status"
+          exit 1
+        fi
+
     - name: Commit and push assets
       env:
         GITHUB_TOKEN: ${{ secrets.POTATO_KEY }}
