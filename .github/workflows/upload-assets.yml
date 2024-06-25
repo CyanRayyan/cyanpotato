@@ -23,6 +23,14 @@ jobs:
         fi
         echo "Git user set up completed"
 
+    - name: Check for .git directory
+      run: |
+        if [ ! -d ".git" ]; then
+          echo ".git directory does not exist"
+          exit 1
+        fi
+        echo ".git directory exists"
+
     - name: Create assets directory
       run: |
         echo "Creating assets directory"
