@@ -1,0 +1,20 @@
+name: Upload Assets
+on: [push]
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Upload assets
+      run: |
+        git config --global user.name "CyanRayyan"
+        git config --global user.email "1dangmax@hdsb.ca"
+        mkdir -p assets
+        cd assets
+        wget -qO- "https://dl.dropboxusercontent.com/scl/fi/fbuiy99tb218akvy6u9bg/Potato-By-Tyler-Dang.zip?dl=1" | tar -xz
+        git add .
+        git commit -m "Add assets"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.POTATO_KEY }}
