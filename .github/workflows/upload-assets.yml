@@ -5,11 +5,24 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+    - name: Set up environment
+      run: |
+        echo "Checking environment variables"
+        echo "GITHUB_TOKEN: ${{ secrets.POTATO_KEY }}"
+        echo "Checking Git version"
+        git --version
+
+    - name: Manual repository clone
+      run: |
+        echo "Cloning repository manually"
+        git clone https://github.com/CyanRayyan/Potatogame.git
+        cd Potatogame
+        echo "Repository cloned"
+        ls -l
 
     - name: Set up Git user
       run: |
+        cd Potatogame
         echo "Setting up Git user"
         git config --global user.name "CyanRayyan"
         if [ $? -ne 0 ]; then
@@ -23,16 +36,9 @@ jobs:
         fi
         echo "Git user set up completed"
 
-    - name: Check for .git directory
-      run: |
-        if [ ! -d ".git" ]; then
-          echo ".git directory does not exist"
-          exit 1
-        fi
-        echo ".git directory exists"
-
     - name: Create assets directory
       run: |
+        cd Potatogame
         echo "Creating assets directory"
         mkdir -p assets
         if [ $? -ne 0 ]; then
@@ -44,6 +50,7 @@ jobs:
 
     - name: Download assets
       run: |
+        cd Potatogame
         echo "Downloading assets"
         wget -O assets/assets.zip "https://www.dropbox.com/scl/fi/fbuiy99tb218akvy6u9bg/Potato-By-Tyler-Dang.zip?rlkey=1wtfely7oyutriq9qqmihx64b&st=cm1smtvn&dl=1"
         if [ $? -ne 0 ]; then
@@ -54,6 +61,7 @@ jobs:
 
     - name: Extract assets
       run: |
+        cd Potatogame
         echo "Extracting assets"
         unzip assets/assets.zip -d assets
         if [ $? -ne 0 ]; then
@@ -65,11 +73,13 @@ jobs:
 
     - name: Debug directory structure
       run: |
+        cd Potatogame
         echo "Current directory structure:"
         ls -R
 
     - name: Check Git status
       run: |
+        cd Potatogame
         echo "Checking Git status"
         git status
         if [ $? -ne 0 ]; then
@@ -81,6 +91,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.POTATO_KEY }}
       run: |
+        cd Potatogame
         echo "Starting Git operations"
         git add .
         if [ $? -ne 0 ]; then
